@@ -2,7 +2,7 @@
   "name": "mailer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start:dev": "nodemon server.js",
     "build": "node server.js"
