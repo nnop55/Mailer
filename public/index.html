@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-width: 340px;
+        }
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Email</h1>
+        <form id="emailForm">
+            <label for="email">Gmail Address:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">HTML Message:</label>
+            <textarea id="message" name="message" rows="10" required></textarea>
+            <button type="submit" id="btn">Send Email</button>
+        </form>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const responseDiv = document.getElementById('response');
+            const btn = document.getElementById('btn');
+
+            btn.innerText = '...Loading'
+            btn.style.pointerEvents = 'none'
+
+            const response = await fetch(`http://localhost:3000/send-email`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, message })
+            });
+
+            const responseData = await response.json();
+            btn.innerText = 'Send Email'
+            btn.style.pointerEvents = 'auto'
+            responseDiv.innerText = responseData.message;
+
+            setTimeout(()=>{
+                responseDiv.innerText = ''
+            },5000)
+        });
+    </script>
+</body>
+</html>
